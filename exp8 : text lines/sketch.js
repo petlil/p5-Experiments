@@ -4,26 +4,30 @@ let fontSize = 20;
 let textLen = 0; // length of the string on the screen (in pixels)
 let numLines = 30;
 
-var x = 0;
-
-var l1;
+var lines = [];
 
 function setup() {
-  createCanvas(1500, 800);
+  createCanvas(800, 800);
   textFont('Helvetica', fontSize);
   textLen = textWidth(chars);
-  x = 0;
 
-  l1 = new Line(chars, 0, 0, fontSize);
-  l1.setStep(3);
+  let h = height / numLines;
+
+  for(var y = 0; y < numLines; y++) {
+    lines[y] = new Line(chars, h * y, fontSize);
+    lines[y].setStep(5);
+  }
 }
 
 function draw() {
   background(0);
   fill(255);
 
-  l1.calculate();
-  l1.render();
+  for(var i = 0; i < numLines; i++) {
+    lines[i].calculate();
+    lines[i].render();
+  }
+
 }
 
 class Line {
@@ -36,7 +40,7 @@ class Line {
     this.y = y;
     this.fontSize = fontSize;
 
-    this.textWid = textWidth(text);
+    this.textWid = textWidth(text); // line length in pixels
     this.x = -this.textWid;
   }
   
@@ -54,8 +58,6 @@ class Line {
     for(var i = 0; i < this.numRepeats; i++) {
       text(this.text, this.x + (i * this.textWid), this.y, this.textWid, fontSize);
     }
-
-    //text(this.x, width/2, height/2)
   }
 
   setStep(newStep) {
