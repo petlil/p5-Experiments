@@ -7,15 +7,21 @@ let numLines = 30;
 var lines = [];
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(500, 500);
   textFont('Helvetica', fontSize);
   textLen = textWidth(chars);
 
   let h = height / numLines;
 
-  for(var y = 0; y < numLines; y++) {
-    lines[y] = new Line(chars, h * y, fontSize);
-    lines[y].setStep(5);
+  for(var i = 0; i < numLines; i++) {
+    if(i%2==0) {
+      lines[i] = new Line(chars, i * 5, h * i, fontSize);
+      lines[i].setStep(3);
+    }
+    else {
+      lines[i] = new Line(chars, i * -5, h * i, fontSize);
+      lines[i].setStep(-3);
+    }
   }
 }
 
@@ -35,28 +41,30 @@ class Line {
   textWid = 0;
   numRepeats = 0;
 
-  constructor(text, y, fontSize) {
+  constructor(text, xoffset, y, fontSize) {
     this.text = text;
     this.y = y;
     this.fontSize = fontSize;
+    this.xoffset = xoffset;
 
     this.textWid = textWidth(text); // line length in pixels
-    this.x = -this.textWid;
-  }
-  
-  calculate() {
+    this.x = -this.textWid + this.xoffset;
+
     // get the number of times the line should be repeated
     // to always fill the screen
     this.numRepeats = int(width/this.textWid) + 3;
-
+  }
+  
+  calculate() {
     this.x += this.step;
     if(this.x >= 0) this.x = -this.textWid;
-    else if(this.x <= -this.textWid * 2) this.x = -this.textWid;
+    else if(this.x <= (-this.textWid * 2)) this.x = -this.textWid;
   }
 
   render() {
     for(var i = 0; i < this.numRepeats; i++) {
-      text(this.text, this.x + (i * this.textWid), this.y, this.textWid, fontSize);
+      text(this.text, this.x + (i * this.textWid) + this.xoffset, this.y, this.textWid, fontSize);
+      //text(int(this.x), width/2, this.y, this.textWid, fontSize);
     }
   }
 
