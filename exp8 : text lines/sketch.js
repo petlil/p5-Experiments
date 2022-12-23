@@ -6,56 +6,56 @@ let numLines = 30;
 
 var x = 0;
 
+var l1;
+
 function setup() {
-  createCanvas(800, 800);
-  textFont('Calibri', fontSize);
+  createCanvas(1500, 800);
+  textFont('Helvetica', fontSize);
   textLen = textWidth(chars);
   x = 0;
+
+  l1 = new Line(chars, 0, 0, fontSize);
+  l1.setStep(3);
 }
 
 function draw() {
   background(0);
   fill(255);
 
-  var step = height / numLines;
-  
-  for(y = 0; y < height; y += step) {
-    text(chars, x, y, textLen, fontSize);
-    text(chars, x + textLen, y, textLen, fontSize);
-    text(chars, x + (textLen * 2), y, textLen, fontSize);
-  }
-
-  // progress line across screen
-  x = x % textLen;
-  x -= 3;
+  l1.calculate();
+  l1.render();
 }
 
-class line {
+class Line {
   step = 0;
   textWid = 0;
   numRepeats = 0;
 
-  constructor(text, x, y, fontSize) {
+  constructor(text, y, fontSize) {
     this.text = text;
-    this.x = x;
     this.y = y;
     this.fontSize = fontSize;
 
     this.textWid = textWidth(text);
+    this.x = -this.textWid;
   }
   
   calculate() {
     // get the number of times the line should be repeated
     // to always fill the screen
-    numRepeats = int(width/textWid) + 1;
+    this.numRepeats = int(width/this.textWid) + 3;
 
     this.x += this.step;
+    if(this.x >= 0) this.x = -this.textWid;
+    else if(this.x <= -this.textWid * 2) this.x = -this.textWid;
   }
 
   render() {
-    for(i = 0; i < this.numRepeats; i++) {
-      text(text, x + (i * textLen), y, textLen, fontSize);
+    for(var i = 0; i < this.numRepeats; i++) {
+      text(this.text, this.x + (i * this.textWid), this.y, this.textWid, fontSize);
     }
+
+    //text(this.x, width/2, height/2)
   }
 
   setStep(newStep) {
