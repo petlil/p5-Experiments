@@ -1,6 +1,7 @@
 let wanderers = [];
 let numWanderers = 10;
-let lineDist = 100;
+let lineDistMin = 0;
+let lineDistMax = 100;
 let debug = true;
 
 function setup() {
@@ -11,6 +12,7 @@ function setup() {
   }
 
   strokeWeight(2);
+
 }
 
 function draw() {
@@ -33,8 +35,9 @@ function draw() {
 
 function checkAndDraw(w1, w2) {
   d = dist(w1.x, w1.y, w2.x, w2.y);
-  if(d < lineDist) {
-    stroke(map(d, 0, lineDist, 0, 255));
+  if(d < lineDistMax && d > lineDistMin) {
+    col = map(d, lineDistMin, lineDistMax, 0, 255);
+    stroke(255, col, col);
     line(w1.x, w1.y, w2.x, w2.y);
 
     if(debug) {
@@ -96,4 +99,10 @@ class Wanderer {
     text("y: " + int(this.y), this.x + width / 30, this.y + width/100);
   }
 
+}
+
+function keyPressed() {
+  if(key == 's') {
+    saveGif('wandering_joiners_debug', 10);
+  }
 }
