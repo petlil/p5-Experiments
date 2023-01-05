@@ -1,11 +1,11 @@
 let wanderers = [];
-let numWanderers = 10;
+let numWanderers = 20;
 let lineDistMin = 0;
-let lineDistMax = 100;
-let debug = true;
+let lineDistMax = 120;
+let debug = false;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(600, 600);
 
   for(i = 0; i < numWanderers; i++) {
     wanderers.push(new Wanderer());
@@ -66,7 +66,7 @@ class Wanderer {
     this.y = 0;
     this.noisex = random(0, 1000);
     this.noisey = random(0, 1000);
-    this.noiseRate = 0.005;
+    this.noiseRate = 0.006;
     //this.noiseRate = 0;
   }
 
@@ -85,17 +85,17 @@ class Wanderer {
 
   debug() {
     noStroke();
-    textFont('Helvetica', 10);
+    textFont('Helvetica', 12);
     textAlign('left', 'center');
 
     // x text
     fill(255, 0, 0);
-    rect(this.x + width / 60, this.y - width/100, 3, 3);
+    rect(this.x + width / 60, this.y - width/100, width/100, width/100);
     text("x: " + int(this.x), this.x + width / 30, this.y - width/100);
 
     // y text
     fill(0, 0, 255);
-    rect(this.x + width / 60, this.y + width/100, 3, 3);
+    rect(this.x + width / 60, this.y + width/100, width/100, width/100);
     text("y: " + int(this.y), this.x + width / 30, this.y + width/100);
   }
 
